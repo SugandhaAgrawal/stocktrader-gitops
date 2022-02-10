@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: trader-test
+spec:
+  generators:
+  - clusters: {} # Automatically use all clusters defined within Argo CD
+  template:
+    metadata:
+      name: '{{name}}-trader' 
+      labels:
+          type: application      
+    spec:
+      project: "default"
+      source:
+        repoURL: https://github.com/stocktrader-ops/stocktrader-gitops
+        targetRevision: HEAD
+        path: manifests
+      destination:
+        server: '{{server}}' 
+        namespace: test
