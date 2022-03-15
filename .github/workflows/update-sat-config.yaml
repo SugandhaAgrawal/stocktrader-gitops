@@ -16,10 +16,10 @@ on:
 env:
   IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}
   IBM_CLOUD_REGION: us-south
-  IKS_CLUSTER: ${{ secrets.IKS_CLUSTER }}
-  DEPLOYMENT_NAME: trader
-  CLUSTER_NAMESPACE: stocktrader-vault
+
   SAT_CONFIG_NAME: gas-config
+  SAT_GROUP_NAME: gas-cluster-group
+  SAT_CLUSTER_NAME: ${{ secrets.IKS_CLUSTER }}
   GITHUB_SHA: ${{ github.sha }}
   
 jobs:  
@@ -64,4 +64,16 @@ jobs:
       run: |
         ibmcloud sat config version create --name "${GITHUB_SHA}" --read-config satellite/asset-mgr-app.yaml --config "${SAT_CONFIG_NAME}" --file-format yaml -q
 
-
+    # Create cluster group
+    - name: Create cluster group
+      run: |
+        ibmcloud sat group ls
+        ibmcloud sat group get --group "${SAT_GROUP_NAME}" -q
+        if [ $? -eq 1 ]
+        then
+          echo "No group creating"
+          ibmcloud sat group create --name "${SAT_GROUP_NAME}" --cluster "${SAT_CLUSTER_NAME}" -q
+        else
+          echo "Config ${SAT_GROUP_NAME} already exists."
+          
+        fi
