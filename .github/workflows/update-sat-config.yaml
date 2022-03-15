@@ -90,7 +90,8 @@ jobs:
       run: |
         ibmcloud sat subscription ls
         set +e
-        ibmcloud sat subscription get --subscription "${SAT_SUB_NAME}" -q
+        # get command bug workaroud with grep
+        ibmcloud sat subscription get --subscription "${SAT_SUB_NAME}" -q | grep "${SAT_SUB_NAME}"
         if [ $? -eq 1 ]
         then
           set -e
