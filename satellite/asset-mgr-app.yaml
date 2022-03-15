@@ -8,6 +8,8 @@ kind: Deployment
 metadata:
   name: asset-mgr-app-v2
   namespace: gas-asset-mgr
+  labels:
+    test: github-edition-1  
 spec:
   selector:
     matchLabels:
