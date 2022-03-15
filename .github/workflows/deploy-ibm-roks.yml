@@ -11,6 +11,7 @@ on:
       - main 
     paths-ignore:
     - '.github/**'    
+    - 'satellite/**'
 
 # Environment variables available to all jobs and steps in this workflow
 env:
