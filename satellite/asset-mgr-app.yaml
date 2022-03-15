@@ -9,12 +9,12 @@ metadata:
   name: asset-mgr-app-v2
   namespace: gas-asset-mgr
   labels:
-    test: github-edition-1  
+    test: github-edition-2 
 spec:
   selector:
     matchLabels:
       app: asset-mgr-app
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: asset-mgr-app
-          image: greghint/cloudsat
+          image: greghint/helloapp
           ports:
             - containerPort: 8080
 ---
