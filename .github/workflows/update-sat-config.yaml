@@ -49,12 +49,15 @@ jobs:
     - name: Create sat config
       run: |
         ibmcloud sat config ls
+        set +e
         ibmcloud sat config get --config "${SAT_CONFIG_NAME}" -q
         if [ $? -eq 1 ]
         then
+          set -e
           echo "No config creating"
           ibmcloud sat config create --name "${SAT_CONFIG_NAME}" -q
         else
+          set -e
           echo "Config ${SAT_CONFIG_NAME} already exists."
         fi
 
@@ -68,12 +71,15 @@ jobs:
     - name: Create cluster group
       run: |
         ibmcloud sat group ls
+        set +e
         ibmcloud sat group get --group "${SAT_GROUP_NAME}" -q
         if [ $? -eq 1 ]
         then
+          set -e
           echo "No group creating"
           ibmcloud sat group create --name "${SAT_GROUP_NAME}" --cluster "${SAT_CLUSTER_NAME}" -q
         else
+          set -e
           echo "Config ${SAT_GROUP_NAME} already exists."
           
         fi
