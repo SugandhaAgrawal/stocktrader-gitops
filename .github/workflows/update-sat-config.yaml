@@ -20,6 +20,7 @@ env:
   SAT_CONFIG_NAME: gas-config
   SAT_GROUP_NAME: gas-cluster-group
   SAT_CLUSTER_NAME: ${{ secrets.IKS_CLUSTER }}
+  SAT_SUB_NAME: gas-app-sub
   GITHUB_SHA: ${{ github.sha }}
   
 jobs:  
@@ -87,5 +88,19 @@ jobs:
     # Create subscription
     - name: Create subscription
       run: |
-        ibmcloud sat subscription create --name "${SAT_GROUP_NAME}-${SAT_CONFIG_NAME}-${GITHUB_SHA}" --group "${SAT_GROUP_NAME}" --config "${SAT_CONFIG_NAME}" --version "${GITHUB_SHA}" -q
+        ibmcloud sat subscription ls
+        set +e
+        ibmcloud sat subscription get --subscription "${SAT_SUB_NAME}" -q
+        if [ $? -eq 1 ]
+        then
+          set -e
+          echo "No subscription - creating"
+          ibmcloud sat subscription create --name "${SAT_SUB_NAME}" --group "${SAT_GROUP_NAME}" --config "${SAT_CONFIG_NAME}" --version "${GITHUB_SHA}" -q
+        else
+          set -e
+          echo "Subscription ${SAT_SUB_NAME} already exists - updating to the latest version"
+          ibmcloud sat subscription update --subscription "${SAT_SUB_NAME}" --version "${GITHUB_SHA}" -f -q
+        fi    
+
+        
 
