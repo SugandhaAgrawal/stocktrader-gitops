@@ -24,22 +24,13 @@ env:
   SAT_SUB_NAME: gas-app-sub
   GITHUB_SHA: ${{ github.sha }}
   
-  SAT_CLUSTER_NAMES: "pomidor ogorek marchewa"
+  # SAT_CLUSTER_NAMES: "pomidor ogorek marchewa"
   
 jobs:  
   update-sat-config:
     name: Deploy to OpenShift cluster
     runs-on: ubuntu-latest
     steps:
-    # list clusters
-    - name: List clusters
-      run: |
-        ARRAY=($SAT_CLUSTER_NAMES)
-        for element in "${ARRAY[@]}"; do
-          echo "$element"
-        done
-        exit 1
-    
     # Checkout repo   
     - name: Checkout
       uses: actions/checkout@v2    
@@ -68,7 +59,13 @@ jobs:
         then
           set -e
           echo "No group creating"
-          ibmcloud sat group create --name "${SAT_GROUP_NAME}" --cluster "${SAT_CLUSTER_NAME}" -q
+          ibmcloud sat group create --name "${SAT_GROUP_NAME}" -q
+          
+          ARRAY=($SAT_CLUSTER_NAME)
+          for element in "${ARRAY[@]}"; do
+            echo "Adding cluster $element"
+            ibmcloud sat group attach --cluster $element --group "${SAT_GROUP_NAME}" -q
+          done
         else
           set -e
           echo "Config ${SAT_GROUP_NAME} already exists."
