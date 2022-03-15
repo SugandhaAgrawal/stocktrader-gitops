@@ -48,7 +48,7 @@ jobs:
     # Create sat config
     - name: Create sat config
       run: |
-        ibmcloud ibmcloud sat config ls
+        ibmcloud sat config ls
         ibmcloud sat config create --name "${SAT_CONFIG_NAME}" -q
         
     # Create version
