@@ -24,7 +24,7 @@ env:
   SAT_SUB_NAME: gas-app-sub
   GITHUB_SHA: ${{ github.sha }}
   
-  SAT_CLUSTER_NAMES: "dev dev1 dev2"
+  SAT_CLUSTER_NAMES: "pomidor ogorek marchewa"
   
 jobs:  
   update-sat-config:
