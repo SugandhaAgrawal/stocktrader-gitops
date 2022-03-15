@@ -9,7 +9,7 @@ metadata:
   name: asset-mgr-app-v2
   namespace: gas-asset-mgr
   labels:
-    test: github-edition-3
+    test: github-edition-4
 spec:
   selector:
     matchLabels:
