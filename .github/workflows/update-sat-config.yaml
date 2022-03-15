@@ -87,5 +87,5 @@ jobs:
     # Create subscription
     - name: Create subscription
       run: |
-        ibmcloud sat subscription create --name "${SAT_GROUP_NAME}-${SAT_CONFIG_NAME}-${GITHUB_SHA}" --group "${SAT_GROUP_NAME} --config "${SAT_CONFIG_NAME}" --version "${GITHUB_SHA}" -q
+        ibmcloud sat subscription create --name "${SAT_GROUP_NAME}-${SAT_CONFIG_NAME}-${GITHUB_SHA}" --group "${SAT_GROUP_NAME}" --config "${SAT_CONFIG_NAME}" --version "${GITHUB_SHA}" -q
 
