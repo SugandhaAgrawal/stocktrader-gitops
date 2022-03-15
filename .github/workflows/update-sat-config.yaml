@@ -45,6 +45,23 @@ jobs:
         ibmcloud cr region-set "${IBM_CLOUD_REGION}"
         ibmcloud cr login
         
+    # Create cluster group
+    - name: Create cluster group
+      run: |
+        ibmcloud sat group ls
+        set +e
+        ibmcloud sat group get --group "${SAT_GROUP_NAME}" -q
+        if [ $? -eq 1 ]
+        then
+          set -e
+          echo "No group creating"
+          ibmcloud sat group create --name "${SAT_GROUP_NAME}" --cluster "${SAT_CLUSTER_NAME}" -q
+        else
+          set -e
+          echo "Config ${SAT_GROUP_NAME} already exists."
+          
+        fi
+    
     # Create sat config
     - name: Create sat config
       run: |
@@ -67,19 +84,8 @@ jobs:
       run: |
         ibmcloud sat config version create --name "${GITHUB_SHA}" --read-config satellite/asset-mgr-app.yaml --config "${SAT_CONFIG_NAME}" --file-format yaml -q
 
-    # Create cluster group
-    - name: Create cluster group
+    # Create subscription
+    - name: Create subscription
       run: |
-        ibmcloud sat group ls
-        set +e
-        ibmcloud sat group get --group "${SAT_GROUP_NAME}" -q
-        if [ $? -eq 1 ]
-        then
-          set -e
-          echo "No group creating"
-          ibmcloud sat group create --name "${SAT_GROUP_NAME}" --cluster "${SAT_CLUSTER_NAME}" -q
-        else
-          set -e
-          echo "Config ${SAT_GROUP_NAME} already exists."
-          
-        fi
+        ibmcloud sat subscription create --name "${SAT_GROUP_NAME}-${SAT_CONFIG_NAME}-${GITHUB_SHA}" --group "${SAT_GROUP_NAME} --config "${SAT_CONFIG_NAME}" --version "${GITHUB_SHA}" -q
+
