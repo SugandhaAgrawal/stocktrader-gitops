@@ -1,0 +1,59 @@
+# This workflow deploys StockTrder CR to OCP cluster in IBM Cloud
+#
+### Before you begin:
+# - Have access to IBM Cloud and OCP cluster
+
+name: Update satellite config
+
+on: 
+  push:
+    branches:
+      - main 
+    paths:
+    - 'satellite/**'
+
+# Environment variables available to all jobs and steps in this workflow
+env:
+  IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}
+  IBM_CLOUD_REGION: us-south
+  IKS_CLUSTER: ${{ secrets.IKS_CLUSTER }}
+  DEPLOYMENT_NAME: trader
+  CLUSTER_NAMESPACE: stocktrader-vault
+  SAT_CONFIG_NAME: gas-config
+  GITHUB_SHA: ${{ github.sha }}
+  
+jobs:  
+  update-sat-config:
+    name: Deploy to OpenShift cluster
+    runs-on: ubuntu-latest
+    steps:
+    # Checkout repo   
+    - name: Checkout
+      uses: actions/checkout@v2    
+    # Download and Install IBM Cloud CLI
+    - name: Install IBM Cloud CLI
+      run: |
+        curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
+        ibmcloud --version
+        ibmcloud config --check-version=false
+        ibmcloud plugin install -f kubernetes-service
+        ibmcloud plugin install -f container-registry
+    # Authenticate with IBM Cloud CLI
+    - name: Authenticate with IBM Cloud CLI
+      run: |
+        ibmcloud login --apikey "${IBM_CLOUD_API_KEY}" -r "${IBM_CLOUD_REGION}"
+        ibmcloud cr region-set "${IBM_CLOUD_REGION}"
+        ibmcloud cr login
+        
+    # Create sat config
+    - name: Create sat config
+      run: |
+        ibmcloud ibmcloud sat config ls
+        ibmcloud sat config create --name "${SAT_CONFIG_NAME}" -q
+        
+    # Create version
+    - name: Create version
+      run: |
+        ibmcloud sat config version create --name "${GITHUB_SHA}" --read-config satellite/asset-mgr-app.yaml --config "${SAT_CONFIG_NAME}" --file-format yaml -q
+
+
