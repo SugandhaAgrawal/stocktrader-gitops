@@ -20,14 +20,26 @@ env:
   SAT_CONFIG_NAME: gas-config
   SAT_GROUP_NAME: gas-cluster-group
   SAT_CLUSTER_NAME: ${{ secrets.IKS_CLUSTER }}
+  
   SAT_SUB_NAME: gas-app-sub
   GITHUB_SHA: ${{ github.sha }}
+  
+  SAT_CLUSTER_NAMES: "dev dev1 dev2"
   
 jobs:  
   update-sat-config:
     name: Deploy to OpenShift cluster
     runs-on: ubuntu-latest
     steps:
+    # list clusters
+    - name: List clusters
+      run: |
+        ARRAY=($SAT_CLUSTER_NAMES)
+        for element in "${ARRAY[@]}"; do
+          echo "$element"
+        done
+        exit 1
+    
     # Checkout repo   
     - name: Checkout
       uses: actions/checkout@v2    
