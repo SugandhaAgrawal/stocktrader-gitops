@@ -49,8 +49,16 @@ jobs:
     - name: Create sat config
       run: |
         ibmcloud sat config ls
-        ibmcloud sat config create --name "${SAT_CONFIG_NAME}" -q
-        
+        ibmcloud sat config get --config "${SAT_CONFIG_NAME}" -q
+        if [ $? -eq 1 ]
+        then
+          echo "No config creating"
+          ibmcloud sat config create --name "${SAT_CONFIG_NAME}" -q
+        else
+          echo "Config ${SAT_CONFIG_NAME} already exists."
+        fi
+
+       
     # Create version
     - name: Create version
       run: |
