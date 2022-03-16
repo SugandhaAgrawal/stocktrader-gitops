@@ -47,8 +47,9 @@ jobs:
     - name: Authenticate with IBM Cloud CLI
       run: |
         ibmcloud login --apikey "${IBM_CLOUD_API_KEY}" -r "${IBM_CLOUD_REGION}"
-        ibmcloud cr region-set "${IBM_CLOUD_REGION}"
-        ibmcloud cr login
+        # commented out cr login as not needed here
+        # ibmcloud cr region-set "${IBM_CLOUD_REGION}"
+        # ibmcloud cr login
         
     # Create cluster group
     - name: Create cluster group
