@@ -9,12 +9,12 @@ metadata:
   name: asset-mgr-app-v2
   namespace: gas-asset-mgr
   labels:
-    test: github-edition-5
+    test: release-v0.0.2
 spec:
   selector:
     matchLabels:
       app: asset-mgr-app
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
