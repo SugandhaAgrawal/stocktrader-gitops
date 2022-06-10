@@ -98,9 +98,11 @@ jobs:
         echo "git sha: ${GITHUB_SHA}"
         echo "git tag: ${GITHUB_TAG}"
         echo "git repo information: ${GITHUB_REPOSITORY}"
+        echo "Folder: ${FILES_GITHUB}"
+        echo "Number of files inside folder: ($FILES_GITHUB)"
         ARRAY=($FILES_GITHUB)
           for element in "${ARRAY[@]}"; do
-            echo "all yaml files inside Satellite folder"
+            echo "all files inside Satellite folder: ${ARRAY[@]}"
             ibmcloud sat config version create --name "${GITHUB_TAG}" --read-config "${ARRAY[@]}" --config "${SAT_CONFIG_NAME}" --file-format yaml -q
           done
 
