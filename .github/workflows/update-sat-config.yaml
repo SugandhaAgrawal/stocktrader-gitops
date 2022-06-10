@@ -26,7 +26,7 @@ env:
   GITHUB_SHA: ${{ github.sha }}
   GITHUB_TAG: ${{github.ref_name}} 
   GITHUB_REPOSITORY: ${{github.respository}}
-  FILES_GITHUB: "${GITHUB_REPOSITORY}/satellite"
+  FILES_GITHUB: ${GITHUB_REPOSITORY}/satellite
   
 jobs:  
   update-sat-config:
