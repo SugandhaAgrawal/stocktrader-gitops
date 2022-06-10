@@ -19,10 +19,10 @@ env:
   IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}
   IBM_CLOUD_REGION: us-south
 
-  SAT_CONFIG_NAME: su-config
-  SAT_GROUP_NAME: su-cluster-group
+  SAT_CONFIG_NAME: su-config-demo
+  SAT_GROUP_NAME: su-cluster-group-demo
   SAT_CLUSTER_NAMES: ${{ secrets.CLUSTERGROUP_CLUSTER }}
-  SAT_SUB_NAME: su-app-subscription
+  SAT_SUB_NAME: su-app-subscription-demo
   GITHUB_SHA: ${{ github.sha }}
   GITHUB_TAG: ${{github.ref_name}} 
   GITHUB_REPOSITORY: ${{github.respository}}
