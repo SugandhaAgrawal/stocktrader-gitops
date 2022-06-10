@@ -20,7 +20,7 @@ env:
   IBM_CLOUD_REGION: us-south
 
   SAT_CONFIG_NAME: su-config
-  SAT_GROUP_NAME: su-cluster-group
+  SAT_GROUP_NAME: su-clustergroup-1
   SAT_CLUSTER_NAMES: ${{ secrets.CLUSTERGROUP_CLUSTER }}
   SAT_SUB_NAME: su-app-subscription
   GITHUB_SHA: ${{ github.sha }}
