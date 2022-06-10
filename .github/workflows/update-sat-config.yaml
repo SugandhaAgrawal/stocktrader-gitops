@@ -7,10 +7,10 @@ name: Update satellite config
 
 on: 
   push:
-    tags:
-      - '*'
-#    branches:
-#      - main 
+#    tags:
+#     - '*'
+    branches:
+      - su 
     paths:
     - 'satellite/**'
 
@@ -19,14 +19,15 @@ env:
   IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}
   IBM_CLOUD_REGION: us-south
 
-  SAT_CONFIG_NAME: gas-config
-  SAT_GROUP_NAME: gas-cluster-group
-  SAT_CLUSTER_NAME: ${{ secrets.IKS_CLUSTER }}
-  SAT_SUB_NAME: gas-app-sub
+  SAT_CONFIG_NAME: su-config
+  SAT_GROUP_NAME: su-cluster-group
+  SAT_CLUSTER_NAMES: ${{ secrets.CLUSTERGROUP_CLUSTER }}
+  SAT_SUB_NAME: su-app-subscription
   GITHUB_SHA: ${{ github.sha }}
-  GITHUB_TAG: ${{github.ref_name}}
+  GITHUB_TAG: ${{github.ref_name}} 
+  GITHUB_REPOSITORY: ${{github.respository}}
+  FILES_GITHUB: "${GITHUB_REPOSITORY}/satellite"
   
- 
 jobs:  
   update-sat-config:
     name: Update satellite config
@@ -63,7 +64,7 @@ jobs:
           echo "No group creating"
           ibmcloud sat group create --name "${SAT_GROUP_NAME}" -q
           
-          ARRAY=($SAT_CLUSTER_NAME)
+          ARRAY=($SAT_CLUSTER_NAMES)
           for element in "${ARRAY[@]}"; do
             echo "Adding cluster $element"
             ibmcloud sat group attach --cluster $element --group "${SAT_GROUP_NAME}" -q
@@ -96,7 +97,12 @@ jobs:
       run: |
         echo "git sha: ${GITHUB_SHA}"
         echo "git tag: ${GITHUB_TAG}"
-        ibmcloud sat config version create --name "${GITHUB_TAG}" --read-config satellite/asset-mgr-app.yaml --config "${SAT_CONFIG_NAME}" --file-format yaml -q
+        echo "git repo information: ${GITHUB_REPOSITORY}"
+        ARRAY=($FILES_GITHUB)
+          for element in "${ARRAY[@]}"; do
+            echo "all yaml files inside Satellite folder"
+            ibmcloud sat config version create --name "${GITHUB_TAG}" --read-config "${ARRAY[@]}" --config "${SAT_CONFIG_NAME}" --file-format yaml -q
+          done
 
     # Create subscription
     - name: Create subscription
