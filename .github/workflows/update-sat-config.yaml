@@ -102,7 +102,7 @@ jobs:
         for file in ${FILES_GITHUB}
         do
           echo "all files inside Satellite folder: ${file}"
-          ibmcloud sat config version create --name "${GITHUB_TAG}" --read-config $file --config "${SAT_CONFIG_NAME}" --file-format yaml -q
+          ibmcloud sat config version create --name "${GITHUB_TAG}" --read-config ${file} --config "${SAT_CONFIG_NAME}" --file-format yaml -q
         done
 
     # Create subscription
