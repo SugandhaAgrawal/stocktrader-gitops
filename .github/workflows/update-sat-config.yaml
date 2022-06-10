@@ -97,7 +97,7 @@ jobs:
         echo "git sha: ${GITHUB_SHA}"
         echo "git tag: ${GITHUB_TAG}"
         echo "git repo information: ${GITHUB_REPOSITORY}"
-        FILES_GITHUB=${GITHUB_REPOSITORY}+"/satellite"
+        FILES_GITHUB=${GITHUB_REPOSITORY}/satellite
         echo "Folder: ${FILES_GITHUB}"
         for file in ${FILES_GITHUB}/*
           echo "all files inside Satellite folder: $file"
