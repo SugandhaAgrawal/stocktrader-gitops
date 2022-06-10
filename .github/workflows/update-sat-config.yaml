@@ -99,7 +99,7 @@ jobs:
         echo "git repo information: ${GITHUB_REPOSITORY}"
         FILES_GITHUB=https://github.com/${GITHUB_REPOSITORY}/tree/${GITHUB_TAG}/satellite
         echo "Folder: ${FILES_GITHUB}"
-        for file in ${FILES_GITHUB}/*
+        for file in ${FILES_GITHUB}
         do
           echo "all files inside Satellite folder: "$file""
           ibmcloud sat config version create --name "${GITHUB_TAG}" --read-config "$file" --config "${SAT_CONFIG_NAME}" --file-format yaml -q
