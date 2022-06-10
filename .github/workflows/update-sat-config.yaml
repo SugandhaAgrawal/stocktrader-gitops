@@ -99,12 +99,10 @@ jobs:
         echo "git repo information: ${GITHUB_REPOSITORY}"
         FILES_GITHUB: ${GITHUB_REPOSITORY}+"/satellite"
         echo "Folder: ${FILES_GITHUB}"
-        echo "Number of files inside folder: ($FILES_GITHUB)"
-        ARRAY=($FILES_GITHUB)
-          for element in "${ARRAY[@]}"; do
-            echo "all files inside Satellite folder: ${ARRAY[@]}"
-            ibmcloud sat config version create --name "${GITHUB_TAG}" --read-config "${ARRAY[@]}" --config "${SAT_CONFIG_NAME}" --file-format yaml -q
-          done
+        for file in ${FILES_GITHUB}/*
+          echo "all files inside Satellite folder: $file"
+          ibmcloud sat config version create --name "${GITHUB_TAG}" --read-config $file --config "${SAT_CONFIG_NAME}" --file-format yaml -q
+        done
 
     # Create subscription
     - name: Create subscription
