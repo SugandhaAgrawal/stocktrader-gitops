@@ -66,7 +66,7 @@ jobs:
           
           ARRAY=($SAT_CLUSTER_NAMES)
           for element in "${ARRAY[@]}"; do
-            echo "Adding cluster $element"
+            echo "Adding cluster ${element}"
             ibmcloud sat group attach --cluster $element --group "${SAT_GROUP_NAME}" -q
           done
         else
